@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>LaptopAI | Laptop Price Prediction</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+    <nav class="navbar">
+
+        <a href="/" class="logo">
+            Laptop<span>AI</span>
+        </a>
+
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/predictor">Predictor</a>
+            <a href="/about">About</a>
+            <button class="theme-toggle" onclick="toggleTheme()" id="themeButton">
+                ☀️
+            </button>
+        </div>
+
+    </nav>
+
+
+    <main class="container">
+
+        <section class="hero">
+
+            <div>
+
+                <div class="badge">
+                    AI-POWERED PRICE PREDICTION
+                </div>
+
+                <h1>
+                    Find the estimated
+                    <span>value</span>
+                    of your laptop.
+                </h1>
+
+                <p class="hero-description">
+                    LaptopAI uses machine learning to estimate laptop prices
+                    from specifications such as processor, RAM, storage,
+                    display, graphics and rating.
+                </p>
+
+                <div class="hero-buttons">
+
+                    <a href="/predictor" class="btn btn-primary">
+                        Predict Laptop Price →
+                    </a>
+
+                    <a href="/about" class="btn btn-secondary">
+                        Explore Model
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <div class="laptop-visual">
+
+                <div class="laptop-glow"></div>
+
+                <div class="laptop">
+
+                    <div class="laptop-screen">
+
+                        <div class="screen-content">
+
+                            <div class="ai">
+                                AI
+                            </div>
+
+                            <p>
+                                LAPTOP PRICE PREDICTION
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <div class="laptop-base"></div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <section class="stats-section">
+
+            <div class="stat-card">
+                <h3>93.18%</h3>
+                <p>Test R² Score</p>
+            </div>
+
+            <div class="stat-card">
+                <h3>1,009</h3>
+                <p>Laptop Records</p>
+            </div>
+
+            <div class="stat-card">
+                <h3>14</h3>
+                <p>Engineered Features</p>
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <footer>
+        LaptopAI · Machine Learning Laptop Price Prediction
+    </footer>
+
+    <script>
+
+function toggleTheme() {
+
+    document.body.classList.toggle("light-mode");
+
+    const isLight =
+        document.body.classList.contains("light-mode");
+
+    localStorage.setItem(
+        "laptopAITheme",
+        isLight ? "light" : "dark"
+    );
+
+    updateThemeButton();
+}
+
+
+function updateThemeButton() {
+
+    const button =
+        document.getElementById("themeButton");
+
+    if (!button) {
+        return;
+    }
+
+    const isLight =
+        document.body.classList.contains("light-mode");
+
+    button.textContent =
+        isLight ? "🌙" : "☀️";
+}
+
+
+/* Load saved theme */
+
+const savedTheme =
+    localStorage.getItem("laptopAITheme");
+
+if (savedTheme === "light") {
+    document.body.classList.add("light-mode");
+}
+
+updateThemeButton();
+
+</script>
+
+</body>
+
+</html>

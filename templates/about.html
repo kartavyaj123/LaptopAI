@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>LaptopAI | About</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+
+<body>
+
+    <nav class="navbar">
+
+        <a href="/" class="logo">
+            Laptop<span>AI</span>
+        </a>
+
+        <div class="nav-links">
+
+            <a href="/">Home</a>
+
+            <a href="/predictor">
+                Predictor
+            </a>
+
+            <a href="/about">
+                About
+            </a>
+
+            <button class="theme-toggle" onclick="toggleTheme()" id="themeButton">
+                ☀️
+            </button>
+
+        </div>
+
+    </nav>
+
+
+    <div class="container">
+
+        <section class="page-header">
+
+            <div class="badge">
+                ABOUT LAPTOPAI
+            </div>
+
+            <h1>Machine Learning Behind LaptopAI</h1>
+
+            <p>
+                Understanding the dataset, features and prediction model.
+            </p>
+
+        </section>
+
+
+        <div class="about-content">
+
+
+            <div class="about-card">
+
+                <h2>What is LaptopAI?</h2>
+
+                <p>
+                    LaptopAI is a machine learning based laptop price
+                    prediction system. It uses laptop specifications such
+                    as processor, RAM, storage, display, graphics,
+                    operating system, warranty and rating to estimate
+                    the laptop price in Indian Rupees.
+                </p>
+
+            </div>
+
+
+            <div class="about-card">
+
+                <h2>Dataset</h2>
+
+                <p>
+                    The project uses a dataset containing 1,009 laptop
+                    records. The data is divided into training and testing
+                    sets to evaluate the performance of the machine
+                    learning model.
+                </p>
+
+
+                <div class="about-stats">
+
+                    <div class="about-stat">
+
+                        <h3>1,009</h3>
+
+                        <p>
+                            Total Records
+                        </p>
+
+                    </div>
+
+
+                    <div class="about-stat">
+
+                        <h3>807</h3>
+
+                        <p>
+                            Training Records
+                        </p>
+
+                    </div>
+
+
+                    <div class="about-stat">
+
+                        <h3>202</h3>
+
+                        <p>
+                            Testing Records
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="about-card">
+
+                <h2>Machine Learning Model</h2>
+
+                <p>
+                    LaptopAI uses a Gradient Boosting Regressor with a
+                    preprocessing pipeline. Feature engineering extracts
+                    useful numerical information from the original laptop
+                    specifications before the prediction model processes
+                    the data.
+                </p>
+
+
+                <div class="about-stats">
+
+                    <div class="about-stat">
+
+                        <h3>0.9318</h3>
+
+                        <p>
+                            Test R² Score
+                        </p>
+
+                    </div>
+
+
+                    <div class="about-stat">
+
+                        <h3>₹9,302.77</h3>
+
+                        <p>
+                            Test MAE
+                        </p>
+
+                    </div>
+
+
+                    <div class="about-stat">
+
+                        <h3>14</h3>
+
+                        <p>
+                            Engineered Features
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="about-card">
+
+                <h2>Feature Engineering</h2>
+
+                <p>
+                    The preprocessing pipeline extracts features including
+                    laptop brand, RAM in GB, storage in GB, display size,
+                    display resolution, pixels per inch, CPU cores and
+                    CPU threads. Categorical information is also processed
+                    using one-hot encoding.
+                </p>
+
+            </div>
+
+
+            <div class="about-card">
+
+                <h2>Prediction Note</h2>
+
+                <p>
+                    LaptopAI provides an estimated price based on the
+                    project's dataset and trained machine learning model.
+                    The result should not be considered a live market price,
+                    because actual prices can change depending on sellers,
+                    discounts, availability and market conditions.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <footer>
+        LaptopAI · Machine Learning Laptop Price Prediction
+    </footer>
+
+    <script>
+
+        function toggleTheme() {
+
+            document.body.classList.toggle("light-mode");
+
+            const isLight =
+                document.body.classList.contains("light-mode");
+
+            localStorage.setItem(
+                "laptopAITheme",
+                isLight ? "light" : "dark"
+            );
+
+            updateThemeButton();
+        }
+
+
+        function updateThemeButton() {
+
+            const button =
+                document.getElementById("themeButton");
+
+            if (!button) {
+                return;
+            }
+
+            const isLight =
+                document.body.classList.contains("light-mode");
+
+            button.textContent =
+                isLight ? "🌙" : "☀️";
+        }
+
+
+        /* Load saved theme */
+
+        const savedTheme =
+            localStorage.getItem("laptopAITheme");
+
+        if (savedTheme === "light") {
+            document.body.classList.add("light-mode");
+        }
+
+        updateThemeButton();
+
+    </script>
+
+</body>
+
+</html>

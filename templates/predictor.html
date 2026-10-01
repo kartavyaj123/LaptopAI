@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>LaptopAI | Price Predictor</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+
+<body>
+
+    <nav class="navbar">
+
+        <a href="/" class="logo">
+            Laptop<span>AI</span>
+        </a>
+
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/predictor">Predictor</a>
+            <a href="/about">About</a>
+
+            <button class="theme-toggle" onclick="toggleTheme()" id="themeButton">
+                ☀️
+            </button>
+        </div>
+
+    </nav>
+
+
+    <div class="container">
+
+        <section class="page-header">
+
+            <div class="badge">
+                LAPTOP PRICE ESTIMATOR
+            </div>
+
+            <h1>Predict Your Laptop's Price</h1>
+
+            <p>
+                Enter the laptop specifications and let the ML model
+                estimate its price.
+            </p>
+
+        </section>
+
+
+        <div class="predictor-layout">
+
+
+            <!-- FORM -->
+
+            <div class="form-card">
+
+                <h2>Laptop Specifications</h2>
+
+                <p class="card-description">
+                    Enter the available specifications below.
+                    Dataset-based suggestions will appear while typing.
+                </p>
+
+
+                {% if error %}
+
+                <div class="error-message">
+                    {{ error }}
+                </div>
+
+                {% endif %}
+
+
+                <form action="/predict" method="POST">
+
+                    <div class="form-grid">
+
+
+                        <!-- MODEL -->
+
+                        <div class="form-group full-width">
+
+                            <label for="model">
+                                Laptop Model
+                            </label>
+
+                            <input type="text" name="model" id="model" list="model-options"
+                                placeholder="Example: Lenovo IdeaPad Slim 3" required>
+
+                            <datalist id="model-options"></datalist>
+
+                        </div>
+
+
+                        <!-- RATING -->
+
+                        <div class="form-group">
+
+                            <label for="rating">
+                                Rating
+                            </label>
+
+                            <input type="number" name="rating" id="rating" step="0.1" min="0" max="100"
+                                placeholder="Example: 85" required>
+
+                        </div>
+
+
+                        <!-- PROCESSOR -->
+
+                        <div class="form-group">
+
+                            <label for="processor">
+                                Processor
+                            </label>
+
+                            <input type="text" name="processor" id="processor" list="processor-options"
+                                placeholder="Example: Intel Core i5" required>
+
+                            <datalist id="processor-options"></datalist>
+
+                        </div>
+
+
+                        <!-- CORES -->
+
+                        <div class="form-group">
+
+                            <label for="cores">
+                                CPU Cores / Threads
+                            </label>
+
+                            <input type="text" name="cores" id="cores" list="cores-options"
+                                placeholder="Example: 4 Cores, 8 Threads" required>
+
+                            <datalist id="cores-options"></datalist>
+
+                        </div>
+
+
+                        <!-- RAM -->
+
+                        <div class="form-group">
+
+                            <label for="ram">
+                                RAM
+                            </label>
+
+                            <input type="text" name="ram" id="ram" list="ram-options" placeholder="Example: 16 GB"
+                                required>
+
+                            <datalist id="ram-options"></datalist>
+
+                        </div>
+
+
+                        <!-- STORAGE -->
+
+                        <div class="form-group">
+
+                            <label for="storage">
+                                Storage
+                            </label>
+
+                            <input type="text" name="storage" id="storage" list="storage-options"
+                                placeholder="Example: 512 GB SSD" required>
+
+                            <datalist id="storage-options"></datalist>
+
+                        </div>
+
+
+                        <!-- DISPLAY -->
+
+                        <div class="form-group">
+
+                            <label for="display">
+                                Display
+                            </label>
+
+                            <input type="text" name="display" id="display" list="display-options"
+                                placeholder="Example: 15.6 inches 1920 x 1080" required>
+
+                            <datalist id="display-options"></datalist>
+
+                        </div>
+
+
+                        <!-- GRAPHICS -->
+
+                        <div class="form-group">
+
+                            <label for="graphics">
+                                Graphics
+                            </label>
+
+                            <input type="text" name="graphics" id="graphics" list="graphics-options"
+                                placeholder="Example: NVIDIA RTX 3050" required>
+
+                            <datalist id="graphics-options"></datalist>
+
+                        </div>
+
+
+                        <!-- OS -->
+
+                        <div class="form-group">
+
+                            <label for="os">
+                                Operating System
+                            </label>
+
+                            <input type="text" name="os" id="os" list="os-options" placeholder="Example: Windows 11"
+                                required>
+
+                            <datalist id="os-options"></datalist>
+
+                        </div>
+
+
+                        <!-- WARRANTY -->
+
+                        <div class="form-group">
+
+                            <label for="warranty">
+                                Warranty
+                            </label>
+
+                            <input type="text" name="warranty" id="warranty" list="warranty-options"
+                                placeholder="Example: 1 Year" required>
+
+                            <datalist id="warranty-options"></datalist>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <button type="submit" class="btn btn-primary predict-button">
+
+                        Estimate Laptop Price →
+
+                    </button>
+
+                </form>
+
+            </div>
+
+
+            <!-- RESULT -->
+
+            <div class="result-card">
+
+                <h2>Prediction</h2>
+
+                <p class="card-description">
+                    Your estimated laptop price will appear here.
+                </p>
+
+
+                {% if prediction is not none %}
+
+                <div class="price-result">
+
+                    <small>
+                        Estimated Price
+                    </small>
+
+                    <div class="price">
+                        ₹{{ "{:,.2f}".format(prediction) }}
+                    </div>
+
+                </div>
+
+                {% else %}
+
+                <div class="result-empty">
+
+                    <div class="result-icon">
+                        ✦
+                    </div>
+
+                    <p>
+                        Fill in the laptop specifications
+                        and click <strong>Estimate Laptop Price</strong>
+                        to generate a prediction.
+                    </p>
+
+                </div>
+
+                {% endif %}
+
+
+                <div class="price-result" style="margin-top: 18px;">
+
+                    <small>
+                        Model
+                    </small>
+
+                    <div style="
+                    margin-top: 7px;
+                    font-weight: 700;
+                    color: white;
+                ">
+                        Gradient Boosting Regressor
+                    </div>
+
+                </div>
+
+
+                <div class="price-result" style="margin-top: 12px;">
+
+                    <small>
+                        Test R² Score
+                    </small>
+
+                    <div style="
+                    margin-top: 7px;
+                    font-weight: 700;
+                    color: white;
+                ">
+                        0.9318
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <footer>
+        LaptopAI · AI-Powered Laptop Price Prediction
+    </footer>
+
+
+    <script>
+
+        async function loadSuggestions() {
+
+            const response =
+                await fetch("/get-suggestions");
+
+            const suggestions =
+                await response.json();
+
+            fillDatalist(
+                "model-options",
+                suggestions.models
+            );
+
+            fillDatalist(
+                "processor-options",
+                suggestions.processors
+            );
+
+            fillDatalist(
+                "cores-options",
+                suggestions.cores
+            );
+
+            fillDatalist(
+                "ram-options",
+                suggestions.rams
+            );
+
+            fillDatalist(
+                "storage-options",
+                suggestions.storages
+            );
+
+            fillDatalist(
+                "display-options",
+                suggestions.displays
+            );
+
+            fillDatalist(
+                "graphics-options",
+                suggestions.graphics
+            );
+
+            fillDatalist(
+                "os-options",
+                suggestions.operating_systems
+            );
+
+            fillDatalist(
+                "warranty-options",
+                suggestions.warranties
+            );
+        }
+
+
+        function fillDatalist(
+            datalistId,
+            values
+        ) {
+
+            const datalist =
+                document.getElementById(datalistId);
+
+            values.forEach(function (value) {
+
+                const option =
+                    document.createElement("option");
+
+                option.value = value;
+
+                datalist.appendChild(option);
+
+            });
+        }
+
+
+        loadSuggestions();
+
+    </script>
+
+    <script>
+
+        function toggleTheme() {
+
+            document.body.classList.toggle("light-mode");
+
+            const isLight =
+                document.body.classList.contains("light-mode");
+
+            localStorage.setItem(
+                "laptopAITheme",
+                isLight ? "light" : "dark"
+            );
+
+            updateThemeButton();
+        }
+
+
+        function updateThemeButton() {
+
+            const button =
+                document.getElementById("themeButton");
+
+            if (!button) {
+                return;
+            }
+
+            const isLight =
+                document.body.classList.contains("light-mode");
+
+            button.textContent =
+                isLight ? "🌙" : "☀️";
+        }
+
+
+        /* Load saved theme */
+
+        const savedTheme =
+            localStorage.getItem("laptopAITheme");
+
+        if (savedTheme === "light") {
+            document.body.classList.add("light-mode");
+        }
+
+        updateThemeButton();
+
+    </script>
+
+</body>
+
+</html>
